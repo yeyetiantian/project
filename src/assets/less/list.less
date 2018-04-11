@@ -1,0 +1,15 @@
+.list{
+  .head{
+    background: #efefef;
+  }
+  .item{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid @bdcolor;
+    min-height: 1.0667rem;
+    &:last-child,&.head{
+      border-bottom: 0;
+    }
+  }
+}
