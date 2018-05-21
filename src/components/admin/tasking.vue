@@ -1,155 +1,105 @@
 <template>
-  <div class="task">
-    <div class="list">
-      <div class="head item">
-        <div class="left font-32 p-l-20">任务列表（{{taskList.length}}）</div>
-        <div class="right">
-          <mu-flat-button class="btn" label="创建新任务" icon="add_circle"  @click="proVisible=true"/>
-        </div>
-      </div>
-      <div class="con">
-        <div class="item p-l-20 p-r-20 p-t-10 p-b-10" v-if="taskList.length>0" v-for="(x,i) in taskList">
-          <router-link :to="'/admin/info/'+i" class="left">
-            <p class="font-28">施工编号：AB-0010987</p>
-            <span class="color_999" v-if="i%2===0">2018-20-10 19:20</span>
-          </router-link>
-          <div class="right">
-            <mu-raised-button v-if="i%2===0" class="btn" label="委派任务" @click="csVisible=true"></mu-raised-button>
-            <span v-if="i%2===1" class="time">2018-20-10 19:20</span>
+  <div class="proBox bgG p-t-25">
+    <mt-navbar v-model="selected" class="p-t-30 p-l-25 p-r-25 p-b-30">
+      <mt-tab-item id="1" class="p-20">未分配的 ({{noallotList.length}})</mt-tab-item>
+      <mt-tab-item id="2" class="p-20">已分配的 ({{allotList.length}})</mt-tab-item>
+    </mt-navbar>
+    <!-- tab-container -->
+    <mt-tab-container v-model="selected" swipeable class="p-25 font-28" >
+      <mt-tab-container-item id="1">
+        <div class="proList">
+          <div class="item p-30 m-b-20 font-30" v-if="noallotList.length===0">
+            暂无项目
+          </div>
+          <div class="item p-30 m-b-20" v-if="noallotList.length>0" v-for="x in noallotList" :key="x.projId" @click="linkInfo(x.projId)">
+            <div class="flex-box-btew m-b-20">
+              <span class="text-bold font-30 flex-grow" >{{x.projName}}</span>
+            </div>
+            <div class="flex-box-btew" >
+              <span class="color_999">项目编号：<i class="color_green">{{x.projId}}</i></span>
+              <span>{{x.projState}}</span>
+            </div>
           </div>
         </div>
-        <div class="item" v-if="taskList.length===0">暂无任务！</div>
-      </div>
+      </mt-tab-container-item>
+      <mt-tab-container-item id="2">
+        <div class="proList">
+          <div class="item p-30 m-b-20 font-30" v-if="allotList.length===0">
+            暂无项目
+          </div>
+          <div class="item p-30 m-b-20" v-if="allotList.length>0" v-for="x in allotList" :key="'no-'+x.projId" @click="linkInfo(x.projId)">
+            <div class="flex-box-btew m-b-20">
+              <span class="text-bold font-30">{{x.projName}}</span>
+            </div>
+            <div class="flex-box-btew">
+              <span class="color_999">项目编号：<i class="color_green">{{x.projId}}</i></span>
+              <span>{{x.projState}}</span>
+            </div>
+          </div>
+        </div>
+      </mt-tab-container-item>
+    </mt-tab-container>
+    <div class="searchBox p-r-30">
+      <mu-text-field hintText="请输入搜索内容" icon="search"/>
     </div>
-    <div class="list">
-      <div class="head item">
-        <div class="left font-32 p-l-20">委派记录（{{appointList.length}}）</div>
-        <div class="right p-r-30">
-          <mu-text-field hintText="日期 / 班组名 / 项目名称" icon="search" fullWidth style="margin-bottom: 0"/><br/>
-        </div>
-      </div>
-      <div class="con">
-        <div class="item p-l-20 p-r-20 p-t-10 p-b-10" v-for="x in appointList">
-          <div class="left">
-            <p class="font-28">施工编号：AB-0010987</p>
-            <span class="color_999">2018-20-10 19:20</span>
-          </div>
-          <div class="right">
-            <span class="font-28">王建英</span>
-          </div>
-        </div>
-        <div class="item" v-if="appointList.length===0">暂无委派记录！</div>
-      </div>
-    </div>
-    <mt-actionsheet
-      :actions="proList"
-      v-model="proVisible">
-    </mt-actionsheet>
-    <mt-actionsheet
-      :actions="csList"
-      v-model="csVisible">
-    </mt-actionsheet>
-    <!--<mt-popup position="bottom" v-model="csVisible" class="proPopup">
-      <div class="head">
-        <mu-raised-button class="btn" label="取消" @click="csVisible=false"></mu-raised-button>
-        <mu-raised-button class="btn" label="确定" ></mu-raised-button>
-      </div>
-      <mt-picker :slots="csSlots" @change="csChange"/>
-    </mt-popup>-->
+
   </div>
 </template>
-<script>
-  export default {
-    name: "Tasking",
-    data (){
-        return{
-          taskList:[1,2,3,4,5],
-          appointList:[1,2],
-          proVisible:false,
-          proList:[
-            {
-              name:'xxx项目一期',
-              method(value){
-                console.log(value)
-              }
-            },
-            {
-              name:'xxx项目而期',
-              method(){}
-            }
-          ],
-          proSelect:'',
-          csVisible:false,
-          csList:[
-            {
-              name:'王建英',
-              method(value){
-                console.log(value)
-              }
-            },
-            {
-              name:'王海龙',
-              method(){}
-            }
-          ],
-          csSelect:''
-        }
-    },
-    methods:{
-      proChange (picker, values) {
-        this.proSelect=values
-      },
-      csChange (picker, values) {
-        this.csSelect=values
-      },
-      linkAdd(){
-        console.log(this.proSelect)
-        this.$router.push('/admin/add')
-      }
-    },
-    watch: {},
-    computed: {
-      proSlots(){
-        return [
-          {
-            flex: 1,
-            textAlign: 'center',
-            values:this.proList
-          }
-        ]
-      },
-      csSlots(){
-        return [
-          {
-            flex: 1,
-            textAlign: 'center',
-            values:this.csList
-          }
-        ]
-      }
-    },
-    mounted () {},
-    created () {
 
+<script>
+    export default {
+      name: "Tasking",
+      data() {
+        return {
+          selected: '1',
+          allotList:[],
+          noallotList:[],
+        }
+      },
+      watch:{
+
+      },
+      methods:{
+        getconduct(){
+          this.$ajax.post('/project/complete',{})
+            .then(result => {
+              this.noallotList=result.data.data
+            })
+        },
+        getcomplete(){
+          this.$ajax.post('/task/distribution',{})
+            .then(result => {
+              this.allotList=result.data.data
+            })
+        },
+        linkInfo(id){
+          this.$router.push('/admin/info/'+id)
+        },
+
+      },
+      created(){
+        this.getconduct();
+        this.getcomplete()
+      }
     }
-  }
 </script>
 
 <style lang="less">
-  .task{
-    .con{
-      height: 7.46667rem;
-      overflow-y: auto;
-    }
+  @import "../../assets/less/set";
+
+.proBox .mint-tab-container-item{
+  height: 13.4rem;
+  overflow-y: auto;
+}
+
+  [data-dpr="1"] .mint-tab-item .mint-tab-item-label{
+    font-size:14px;
   }
-  .proPopup{
-    width: 100%;
-    .head{
-      display: flex;
-      align-items: center;
-      .btn{
-        flex: 1;
-      }
-    }
+  [data-dpr="2"] .mint-tab-item .mint-tab-item-label{
+    font-size: 28px;
   }
+  [data-dpr="3"] .mint-tab-item .mint-tab-item-label{
+    font-size: 42px;
+  }
+
 </style>

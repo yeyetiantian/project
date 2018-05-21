@@ -1,52 +1,103 @@
 <template>
-  <div class="form p-t-20 p-l-40 p-r-40 p-b-20 font-28">
-    <div class="item m-b-20">
-      <label>施工编号：</label>
-      <span>AB-0010992</span>
-      <i class="color_999 text-right font-24">2018-20-10 19:20</i>
+  <div class="form  font-28 bgG" style="height: 100vh;overflow-y: auto">
+    <div class="bgL color_white p-t-20 p-r-40 p-b-20 m-b-20">
+      <div class="item m-b-20">
+        <label>项目编号：</label>
+        <span>{{pro.projId}}</span>
+      </div>
+      <div class="item">
+        <label>项目名称：</label>
+        <span>{{pro.projName}}</span>
+      </div>
     </div>
-    <div class="item m-b-20">
-      <label>项目名称：</label>
-      <span>XXXXXXXXX项目建设一期</span>
+    <div class="p-40 bgW" v-if="taskList.length<1">暂无分配任务</div>
+    <div  v-for="x in taskList" :key="x.id">
+      <div class="p-t-20 p-r-40 p-b-20 bgW">
+        <mu-raised-button label="委派给" @click="openCs(x.projId)" primary style="float: right"/>
+        <div class="item m-b-20">
+          <label>施工类型：</label>
+          <span>{{x.conProtype}}</span>
+        </div>
+        <div class="item m-b-20">
+          <label>施工项目名：</label>
+          <span>{{x.conProname}}</span>
+        </div>
+        <div class="item m-b-20">
+          <label>施工地址：</label>
+          <span>{{x.conProaddress}}</span>
+        </div>
+        <div class="item m-b-20">
+          <label>施工编号：</label>
+          <span>{{x.conProcode}}</span>
+        </div>
+        <div class="item m-b-20">
+          <label>相关文件：</label>
+          <span>BQ18-SH00061-GZ001</span>
+        </div>
+        <div class="item">
+          <label>项目说明：</label>
+          <span>{{x.conDescription}}</span>
+        </div>
+      </div>
+      <mu-divider/>
     </div>
-    <div class="item m-b-20">
-      <label>相关文件：</label>
-      <span>BQ18-SH00061-GZ001</span>
+    <div class="p-l-50 p-r-50 m-t-40">
+      <mu-raised-button label="+ 创建新任务" :to="'/admin/add/'+id" primary fullWidth class="p-t-20 p-b-20 font-30 m-b-20"/>
+      <mu-raised-button label="返回列表" :to="'/admin'"  fullWidth class="p-t-20 p-b-20 font-30"/>
     </div>
-    <div class="item m-b-20">
-      <label>项目说明：</label>
-      <span>BQ18-SH00061-GZ001XXXXXXXXX项目建设一期要求说明：内容描述，技术要求。。。。。。。。</span>
-    </div>
-    <mu-flat-button label="修改" icon="border_color" primary style="float: right" @click="linkEdit"/>
+    <cs-prop v-model="csVisible" @close="closeCs" :pro-id="csProId"></cs-prop>
   </div>
 </template>
 
 <script>
+  import csProp from '../util/csProp'
   export default {
     name: "addTask",
+    components:{csProp},
     data (){
       return{
         id:this.$route.params.id,
-        csTypeList:['检查','维修'],
-        csType:0,
-        form:{
-          name:''
-        }
+        pro:{},
+        taskList:[],
+        csVisible:false,
+        csProId:0
       }
     },
     methods:{
+      getPro(){
+        this.$ajax.post('/project/list',{
+          projId:this.id
+        })
+          .then(result=>{
+            this.pro=result.data.data[0]
+          })
+      },
+      getInfo(){
+        this.$ajax.post('/task/list',{
+          projId:this.id
+        })
+          .then(result=>{
+            this.taskList=result.data.data
+          })
+      },
       linkEdit(){
         this.$router.push('../edit/'+this.id)
-      }
-    },
-    computed: {
-      csName(){
-        return this.form.name?'':'这是必填项'
+      },
+      openCs(id){
+        this.csVisible=true;
+        this.csProId=id
+      },
+      closeCs(){
+        this.csVisible=false
       }
     },
     created(){
+      this.getPro();
+      this.getInfo()
     }
   }
 </script>
 
-<style lang="less"></style>
+<style lang="less">
+
+</style>

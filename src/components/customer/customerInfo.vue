@@ -13,52 +13,55 @@
           <img src="" alt="">
         </label>
         <div class="con">
-          <p class="m-b-25 font-36 text-bold">王北川</p>
-          <p class="m-b-10">18901000112</p>
-          <p class="m-b-10">项目经理</p>
-          <p class="m-b-10">上海XXXXXXXX有限公司</p>
-          <p>办公地址：XXXX路XX号XXX室</p>
+          <p class="m-b-25 font-36 text-bold">{{info.custname}}</p>
+          <p class="m-b-10">{{info.custphone}}</p>
+          <p class="m-b-10">{{info.custposition}}</p>
+          <p class="m-b-10">{{info.orgCfname}}</p>
+          <p>办公地址：{{info.custcompaddress}}</p>
         </div>
       </div>
     </div>
     <div class="vice m-t-40 p-t-35 p-l-25 p-b-40">
       <div class="flex-box-btew m-b-20 font-30 text-bold p-r-20">
         <span>所辖建筑全称</span>
-        <mu-raised-button label="更多 . . ." primary/>
+        <mu-raised-button label="更多 . . ." primary v-if="buildList.length>3"/>
       </div>
       <mu-divider class="headLine"/>
       <div class="list">
-        <div class="item p-l-20 p-r-20 m-r-20" v-for="x in 5" :key="x">
-          <div class="left">海天大厦</div>
-          <div class="right">政府</div>
+        <div class="item p-l-20 p-r-20 m-r-20" v-for="(x,i) in buildList" :key="'build_'+i">
+          <div class="left">{{x.buildCfname}}</div>
+          <div class="right">{{x.buildType}}</div>
         </div>
       </div>
     </div>
     <div class="vice m-t-40 p-l-25">
       <div class="center m-b-20 font-30 text-bold p-r-20">
-        <span>所辖建筑全称</span><br>
+        <span>附加信息</span><br>
       </div>
       <mu-divider  class="headLine"/>
       <div class="form m-t-20">
         <div class="item p-l-10 p-r-10 m-b-20">
           <label class="m-r-20">家庭地址：</label>
-          <span>xxxxxxxxxxxxxxxxxx</span>
+          <span>{{info.custhomeaddress}}-{{info.custhomedetaaddress}}</span>
         </div>
         <div class="item p-l-10 p-r-10 m-b-20">
           <label class="m-r-20">生日：</label>
-          <span>xxxxxxxxxxxxxxxxxx</span>
+          <span>{{info.custbirthday}}</span>
         </div>
         <div class="item p-l-10 p-r-10 m-b-20">
           <label class="m-r-20">籍贯：</label>
-          <span>xxxxxxxxxxxxxxxxxx</span>
+          <span>{{info.custhometown}}</span>
         </div>
         <div class="item p-l-10 p-r-10 m-b-20">
           <label class="m-r-20">家庭成员：</label>
-          <span>xxxxxxxxxxxxxxxxxx</span>
+          <div v-if="info.custfamilymember">
+            <p v-for="x in info.custfamilymember.split('$$')">{{x}}</p>
+          </div>
+          <div v-else></div>
         </div>
         <div class="item p-l-10 p-r-10 m-b-20">
           <label class="m-r-20">风格标签：</label>
-          <span>xxxxxxxxxxxxxxxxxx</span>
+          <span>{{info.custlabel}}</span>
         </div>
       </div>
     </div>
@@ -72,13 +75,27 @@
       data(){
         return{
           id:this.$route.params.id,
-          value:50
+          value:50,
+          info:{},
+          buildList:[]
         }
       },
       methods: {
+        get(){
+          this.$ajax.post('/customer/find',{
+            custid:this.id
+          })
+            .then(result => {
+              this.info=result.data.data.tCustomer;
+              this.buildList=result.data.data.custBuilds
+            })
+        },
         linkEdit(){
           this.$router.push('../edit/'+this.id)
         }
+      },
+      created(){
+        this.get()
       }
     }
 </script>

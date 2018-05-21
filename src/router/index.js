@@ -7,30 +7,26 @@ export default new Router({
   routes: [
     {
       path: '/admin',
-      name: 'Admin',
-      meta: {
-        title:'客户关系'
-      },
+
       component: resolve => {
         require(['../components/route.vue'], resolve)
       },
       children:[
         {
           path: '/',
+          meta: {
+            title:'项目负责人 - 项目信息'
+          },
           component: resolve => {
             require(['../components/admin/tasking.vue'], resolve)
           }
         },
         {
-          path: 'task',
-          name: 'Task',
-          component: resolve => {
-            require(['../components/admin/tasking.vue'], resolve)
-          }
-        },
-        {
-          path: 'add',
+          path: 'add/:id',
           name: 'addTask',
+          meta: {
+            title:'项目负责人 - 创建任务'
+          },
           component: resolve => {
             require(['../components/admin/addTask.vue'], resolve)
           }
@@ -38,6 +34,9 @@ export default new Router({
         {
           path: 'edit/:id',
           name: 'editTask',
+          meta: {
+            title:'项目负责人 - 修改任务'
+          },
           component: resolve => {
             require(['../components/admin/editTask.vue'], resolve)
           }
@@ -52,6 +51,9 @@ export default new Router({
         {
           path: 'info/:id',
           name: 'TaskInfo',
+          meta: {
+            title:'项目负责人 - 项目详情'
+          },
           component: resolve => {
             require(['../components/admin/taskInfo.vue'], resolve)
           }
@@ -59,17 +61,48 @@ export default new Router({
       ]
     },
     {
-      path: '/customer',
-      name: 'Customer',
-      meta: {
-        title:'客户关系'
-      },
+      path: '/opadmin',
       component: resolve => {
         require(['../components/route.vue'], resolve)
       },
       children:[
         {
           path: '/',
+          meta: {
+            title:'运营管理 - 任务列表'
+          },
+          component: resolve => {
+            require(['../components/operateAdmin/tasking.vue'], resolve)
+          }
+        },
+        {
+          path: 'search',
+          component: resolve => {
+            require(['../components/operateAdmin/search.vue'], resolve)
+          }
+        },
+        {
+          path: 'add/:id',
+          meta: {
+            title:'运营管理 - 任务分配'
+          },
+          component: resolve => {
+            require(['../components/operateAdmin/add.vue'], resolve)
+          }
+        }
+      ]
+    },
+    {
+      path: '/customer',
+      component: resolve => {
+        require(['../components/route.vue'], resolve)
+      },
+      children:[
+        {
+          path: '/',
+          meta: {
+            title:'销售 - 客户关系'
+          },
           component: resolve => {
             require(['../components/customer/infoList.vue'], resolve)
           }
@@ -77,7 +110,7 @@ export default new Router({
         {
           path: 'info/:id',
           meta: {
-            title:'客户关系-详情'
+            title:'销售 - 客户详情'
           },
           name:'CustomerInfo',
           component: resolve => {
@@ -87,7 +120,7 @@ export default new Router({
         {
           path: 'add',
           meta: {
-            title:'客户关系-添加'
+            title:'销售 - 添加客户'
           },
           name:'CustomerAdd',
           component: resolve => {
@@ -97,7 +130,7 @@ export default new Router({
         {
           path: 'edit/:id',
           meta: {
-            title:'客户关系-修改'
+            title:'销售 - 修改客户'
           },
           name:'CustomerEdit',
           component: resolve => {
@@ -108,16 +141,15 @@ export default new Router({
     },
     {
       path: '/project',
-      name: 'Project',
-      meta: {
-        title:'项目信息'
-      },
       component: resolve => {
         require(['../components/route.vue'], resolve)
       },
       children:[
         {
           path: '/',
+          meta: {
+            title:'销售 - 项目信息'
+          },
           component: resolve => {
             require(['../components/project/infoList.vue'], resolve)
           }
@@ -125,13 +157,19 @@ export default new Router({
         {
           path: 'add',
           name:'ProjectAdd',
+          meta: {
+            title:'销售 - 添加项目'
+          },
           component: resolve => {
             require(['../components/project/add.vue'], resolve)
           }
         },
         {
-          path: 'schedule',
+          path: 'schedule/:id',
           name:'ProjectSchedule',
+          meta: {
+            title:'销售 - 项目阶段'
+          },
           component: resolve => {
             require(['../components/project/schedule.vue'], resolve)
           }
@@ -140,10 +178,6 @@ export default new Router({
     },
     {
       path: '/plan',
-      name: 'Plan',
-      meta: {
-        title:'工作计划'
-      },
       component: resolve => {
         require(['../components/route.vue'], resolve)
       },
@@ -151,6 +185,9 @@ export default new Router({
         {
           path: '/',
           name:'PlanList',
+          meta: {
+            title:'销售 - 工作计划'
+          },
           component: resolve => {
             require(['../components/plan/list.vue'], resolve)
           }
@@ -158,6 +195,9 @@ export default new Router({
         {
           path: 'add',
           name:'PlanAdd',
+          meta: {
+            title:'销售 - 新增计划'
+          },
           component: resolve => {
             require(['../components/plan/add.vue'], resolve)
           }
@@ -167,6 +207,294 @@ export default new Router({
           name:'PlanInfo',
           component: resolve => {
             require(['../components/plan/info.vue'], resolve)
+          }
+        },
+        {
+          path: 'edit/:id',
+          name:'PlanEdit',
+          component: resolve => {
+            require(['../components/plan/edit.vue'], resolve)
+          }
+        }
+      ]
+    },
+    {
+      path: '/clock',
+      component: resolve => {
+        require(['../components/route.vue'], resolve)
+      },
+      children:[
+        {
+          path: '/',
+          name:'PunchClock',
+          meta: {
+            title:'销售 - 外出打卡'
+          },
+          component: resolve => {
+            require(['../components/clock/clock.vue'], resolve)
+          }
+        },
+        {
+          path: 'add',
+          name:'ClockAdd',
+          component: resolve => {
+            require(['../components/clock/add.vue'], resolve)
+          }
+        },
+        {
+          path: 'punch',
+          name:'Punch',
+          meta: {
+            title:'销售 - 现场打卡'
+          },
+          component: resolve => {
+            require(['../components/clock/Punch.vue'], resolve)
+          }
+        },
+        {
+          path: 'record',
+          name:'ClockRecord',
+          meta: {
+            title:'销售 - 打卡记录'
+          },
+          component: resolve => {
+            require(['../components/clock/clock_record.vue'], resolve)
+          }
+        },
+        {
+          path: 'calendar',
+          name:'ClockCalendar',
+          meta: {
+            title:'销售 - 打卡月历'
+          },
+          component: resolve => {
+            require(['../components/clock/calendar.vue'], resolve)
+          }
+        }
+      ]
+    },
+    {
+      path: '/workLog',
+      component: resolve => {
+        require(['../components/route.vue'], resolve)
+      },
+      children:[
+        {
+          path: '/',
+          name:'WorkLog',
+          meta: {
+            title:'销售 - 工作日志'
+          },
+          component: resolve => {
+            require(['../components/workLog/log.vue'], resolve)
+          }
+        },
+        {
+          path: 'add',
+          name:'LogAdd',
+          meta: {
+            title:'销售 - 新增日志'
+          },
+          component: resolve => {
+            require(['../components/workLog/logAdd.vue'], resolve)
+          }
+        },
+        {
+          path: 'edit',
+          name:'LogEdit',
+          component: resolve => {
+            require(['../components/workLog/edit.vue'], resolve)
+          }
+        },
+        {
+          path: 'calendar',
+          name:'LogCalendar',
+          component: resolve => {
+            require(['../components/workLog/calendar.vue'], resolve)
+          }
+        }
+      ]
+    },
+    {
+      path: '/build',
+      component: resolve => {
+        require(['../components/route.vue'], resolve)
+      },
+      children:[
+        {
+          path: '/',
+          name:'Build',
+          meta: {
+            title:'施工日志'
+          },
+          component: resolve => {
+            require(['../components/build/buildLog.vue'], resolve)
+          }
+        },
+        {
+          path: 'clock',
+          name:'buildClock',
+          meta: {
+            title:'运营 - 现场打卡'
+          },
+          component: resolve => {
+            require(['../components/build/clock.vue'], resolve)
+          }
+        },
+        {
+          path: 'info/:id',
+          name:'buildInfo',
+          meta: {
+            title:'运营 - 现场打卡'
+          },
+          component: resolve => {
+            require(['../components/build/buildInfo.vue'], resolve)
+          }
+        },
+        {
+          path: 'schedule/:id',
+          name:'buildSchedule',
+          meta: {
+            title:'运营 - 项目详情'
+          },
+          component: resolve => {
+            require(['../components/build/schedule.vue'], resolve)
+          }
+        },
+        {
+          //项目列表
+          path: 'proList',
+          name:'buildPro',
+          meta: {
+            title:'运营 - 项目管理'
+          },
+          component: resolve => {
+            require(['../components/build/proList.vue'], resolve)
+          }
+        },
+        {
+          path: 'plan',
+          name:'buildPlan',
+          component: resolve => {
+            require(['../components/build/plan.vue'], resolve)
+          }
+        }
+      ]
+    },
+    {
+      path: '/operate',
+      component: resolve => {
+        require(['../components/route.vue'], resolve)
+      },
+      children:[
+        {
+          path: '/',
+          name:'OperatePlan',
+          meta: {
+            title:'运营 - 工作计划'
+          },
+          component: resolve => {
+            require(['../components/operate/planList.vue'], resolve)
+          }
+        },
+        {
+          path: 'planPro/:id',
+          name:'OperatePlanPro',
+          meta: {
+            title:'运营 - 工作计划'
+          },
+          component: resolve => {
+            require(['../components/operate/planPro.vue'], resolve)
+          }
+        },
+        {
+          path: 'planDate',
+          name:'OperatePlanDate',
+          meta: {
+            title:'施工计划'
+          },
+          component: resolve => {
+            require(['../components/operate/planDate.vue'], resolve)
+          }
+        },
+        {
+          path: 'planDateInfo',
+          name:'OperateplanDateInfo',
+          meta: {
+            title:'施工计划'
+          },
+          component: resolve => {
+            require(['../components/operate/planDateInfo.vue'], resolve)
+          }
+        },
+        {
+          path: 'planBuild/:id',
+          name:'OperatePlanBuild',
+          meta: {
+            title:'运营 - 新增计划'
+          },
+          component: resolve => {
+            require(['../components/operate/planBiuld.vue'], resolve)
+          }
+        },
+        {
+          path: 'log',
+          name:'OperateLog',
+          meta: {
+            title:'运营 - 施工日志'
+          },
+          component: resolve => {
+            require(['../components/operate/log.vue'], resolve)
+          }
+        },
+        {
+          path: 'log-list',
+          name:'OperateLogList',
+          meta: {
+            title:'运营 - 施工日志'
+          },
+          component: resolve => {
+            require(['../components/operate/log-list.vue'], resolve)
+          }
+        },
+        {
+          path: 'addlog',
+          name:'OperateaddLog',
+          meta: {
+            title:'运营 - 新增日志'
+          },
+          component: resolve => {
+            require(['../components/operate/addlog.vue'], resolve)
+          }
+        },
+        {
+          path: 'addlogSave',
+          name:'OperateaddLogSave',
+          meta: {
+            title:'施工日志'
+          },
+          component: resolve => {
+            require(['../components/operate/addlogSave.vue'], resolve)
+          }
+        },
+        {
+          path: 'logList',
+          name:'OperatelogList',
+          meta: {
+            title:'施工日志管理_日查看'
+          },
+          component: resolve => {
+            require(['../components/operate/logList.vue'], resolve)
+          }
+        },
+        {
+          path: 'logDate',
+          name:'OperatelogDate',
+          meta: {
+            title:'运营 - 施工日志月历'
+          },
+          component: resolve => {
+            require(['../components/operate/logDate.vue'], resolve)
           }
         }
       ]

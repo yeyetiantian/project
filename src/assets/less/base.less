@@ -3,12 +3,23 @@
 i{
   font-style: normal;
 }
+html,body{
+  height: 100%;
+  overflow: hidden;
+}
+#app{
+  height: 100%;
+  overflow-y: auto;
+}
 @import "config";
 @import "form";
 @import "list";
 
 .color_blue{
   color: @bgcolor;
+}
+.color_black{
+  color: #333;
 }
 .color_red{
   color: red;
@@ -29,7 +40,7 @@ i{
   background-color: #fff;
 }
 .bgL{
-  background-color: @bgcolor;
+  background-color: @bgcolor!important;
 }
 .text-left{
   text-align: left!important;
@@ -42,6 +53,12 @@ i{
 }
 .text-bold{
   font-weight: bold!important;
+}
+.w-100{
+  width: 100%;
+}
+.m0{
+  margin: 0!important;
 }
 .font(@i:12) when (@i <= 30) {
   @m:@i*2;
@@ -107,13 +124,37 @@ i{
   align-items: center;
   justify-content: space-between;
 }
+.flex-box-col{
+  flex-direction: column;
+}
 .flex-box-star{
-  align-items: start;
+  align-items: start!important;
 }
 .flex-grow{
   flex-grow: 1;
 }
+.flex-1{
+  flex: 1;
+}
+.file-button {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  opacity: 0;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: all .5s;
+}
+.fade-enter, .fade-leave-to {
+  height:0;
+  opacity: 0;
+}
+
 .searchBox{
+  width: 100%;
   height:1.6rem;
   display: flex;
   align-items: center;
@@ -135,6 +176,22 @@ i{
     color: #fff;
     display: flex;
     align-items: center;
+  }
+}
+.searchCustomerBox{
+  position: relative;
+  .searchResult{
+    width: 100%;
+    max-height: 6rem;
+    overflow-y:auto ;
+    position: absolute;
+    top:1rem;
+    background-color: #fff;
+    z-index: 20;
+    box-shadow: 0 2px 2px 2px rgba(0,0,0,.2);
+    li{
+      padding: 0.266667rem;
+    }
   }
 }
 .mint-navbar{
@@ -244,4 +301,54 @@ i{
     background: #fff;
     border-radius: 0.2rem;
   }
+}
+.img-box{
+  display: flex;
+  padding-bottom: 12px;
+  flex-wrap: wrap;
+  position: relative;
+  .img{
+    width: 1.2rem;
+    height: 1.2rem;
+    border: 1px solid @bdcolor;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    img{
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+  .error{
+    width:10em;
+    position: absolute;
+    bottom:-10px;
+  }
+}
+
+.imgDilog{
+  width: 90%;
+  max-height: 100%;
+  .mu-dialog-body{
+    padding: 2px;
+    border-radius: 0.2rem;
+  }
+  img{
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+
+.tangram-suggestion-main{
+  z-index: 90000000;
+  top:1.4rem!important;
+  left:0.4rem!important;
+}
+
+.add-btn-bottom{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }

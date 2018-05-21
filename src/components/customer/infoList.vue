@@ -1,28 +1,23 @@
 <template>
-  <div>
-    <div class="searchBox ">
-      <mu-text-field hintText="日期 / 班组名 / 项目名称" icon="search"/>
+  <div class="customerBox">
+    <div class="searchBox">
+      <mu-text-field hintText="名称" icon="search"/>
       <span class="addCur font-36 p-r-20 p-l-20"><mu-icon-button icon="add_circle" to="customer/add"/>客户</span>
     </div>
     <mt-index-list>
-      <mt-index-section v-for="x in indexList" :index="x">
+      <mt-index-section v-for="x in indexList" :key="x.type" :index="x.type">
         <mt-cell-swipe
-          v-for="c in 5"
+          v-for="c in x.list"
+          :key="c.custid"
           class="p-t-20 p-b-20"
-          :to="'./customer/info/'+c"
-          :right="[
-            {
-              content: '修改',
-              style: { background: 'blue', color: '#fff' },
-              handler: () => edit(c)
-            }
-         ]"
+          :to="'./customer/info/'+c.custid"
+          :right="[{content: '修改',style: { background: 'blue', color: '#fff' },handler:function() {edit(c.custid)}}]"
         >
           <span slot="title" class="titlle p-l-25">
-            <i>标题文字</i>
-            <i class="color_999">描述信息</i>
+            <i>{{c.custname}}</i>
+            <i class="color_999">{{c.custposition}}</i>
           </span>
-          <span>icon 是图片</span>
+          <span style="width: 7em;height: 1em;overflow: hidden;text-align: right">{{c.orgCfname}}</span>
           <img slot="icon" src="">
         </mt-cell-swipe>
       </mt-index-section>
@@ -32,23 +27,70 @@
 </template>
 
 <script>
+  import checkCh from '../../assets/js/py'
     export default {
       name: "infoList",
       data (){
         return{
-          indexList:['A','B','C','D','E','F','G','H','I','G','K'],
+          indexList:[],
         }
       },
       methods: {
+        list(){
+          this.$ajax.post('/customer/list',{})
+            .then(result => {
+              result.data.data.forEach((n,i)=>{
+                let Initials = checkCh(n.custname).substring(0,1).toUpperCase();
+                if(this.indexList.length>0){
+                  let flag=true
+                  this.indexList.forEach((m,j)=>{
+                    if(m.type === Initials){
+                      m.list.push(n);
+                      flag=false
+                    }
+                  })
+                  if(flag){
+                    this.indexList.push({
+                      type:Initials,
+                      list:[n]
+                    })
+                  }
+                }else {
+                  this.indexList.push({
+                    type:Initials,
+                    list:[n]
+                  })
+                }
+              })
+              this.indexList.sort((x,y)=>{
+                if (x.type.charCodeAt(0) < y.type.charCodeAt(0)) {
+                  return -1;
+                } else if (x.type.charCodeAt(0) > y.type.charCodeAt(0)) {
+                  return 1;
+                } else {
+                  return 0;
+                }
+              });
+            })
+        },
         edit(id){
           this.$router.push('customer/edit/'+id)
         }
+      },
+      created(){
+        this.list()
       }
     }
 </script>
 
 <style lang="less">
 @import "../../assets/less/set.less";
+.customerBox{
+  .searchBox{
+    position: absolute;z-index: 2;
+    top: 0;
+  }
+}
 .mint-cell-swipe-button{
   display: flex;
   align-items: center;
@@ -77,6 +119,7 @@
 
 
 .mint-indexlist{
-  height: 16.1866rem;
+  height: 100%;
+  padding-top: 2rem!important;
 }
 </style>

@@ -12,7 +12,8 @@
   export default{
     props: {
       value: {
-        type: String
+        type: String,
+        default: '北京市-市辖区-东城区'
       },
       areaFlag: {
         type: Boolean,

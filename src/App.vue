@@ -6,7 +6,20 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  methods:{
+    getdicttype(){
+      this.$ajax.post('/project/dicttype',{})
+        .then(result=>{
+          if(result.data.code===1){
+            this.$store.commit('setdicttype',result.data.data)
+          }
+        })
+    }
+  },
+  mounted(){
+    this.getdicttype()
+  }
 }
 </script>
 
