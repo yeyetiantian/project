@@ -18,15 +18,16 @@
     </ul>
     <!-- 日期 -->
     <ul class="days data" ref="days">
-      <li v-for="(day,i) in days" :key="'day'+i" @click="pick(i)" >
+      <li v-for="(day,i) in days" :key="'day'+i" @click="pick(day)" >
         <div class="num font-28" >
           <b v-if="day.getMonth()===currentMonth">{{day.getDate()}}</b>
           <span v-else>{{day.getDate()}}</span>
         </div>
-        <div class="bg" ></div>
-        <div class="txt" v-if="star && i === star">开始</div>
-        <div class="txt" v-if="end && i === end">结束</div>
-        <div class="txt" v-if="!star&&!end">&nbsp;</div>
+        <div class="bg current" v-if="selectDays.length>1 &&selectDays[0].getTime() < day.getTime() && selectDays[1].getTime() > day.getTime()"></div>
+        <div class="bg active" v-if="selectDays[0] === day || selectDays[1] === day"></div>
+        <div class="txt" v-if="selectDays.length && selectDays[0] === day">开始</div>
+        <div class="txt" v-if="selectDays.length>1 && selectDays[1] === day">结束</div>
+        <div class="txt" v-if="selectDays[0] !== day && selectDays[1] !== day">&nbsp;</div>
       </li>
     </ul>
   </div>
@@ -46,7 +47,7 @@
             monthList:["01","02","03","04","05","06","07","08","09","10","11","12"],
             monthLongList:["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],
             days: [],
-            selectDaays:[],
+            selectDays:[],
             star:null,
             end:null
           }
@@ -92,8 +93,21 @@
             this.days.push(d);
           }
         },
-        pick: function(index) {
-          alert(index);
+        pick: function(day) {
+          if (day.getMonth()!== this.currentMonth) return
+          let state = this.selectDays.length
+          if (state === 0) {
+            this.selectDays.push(day)
+          } else if (state === 1) {
+            if (day.getTime() > this.selectDays[0].getTime()) {
+              this.selectDays.push(day)
+            } else {
+              this.selectDays.splice(0,0,day);
+            }
+          } else {
+            this.selectDays = []
+            this.selectDays.push(day)
+          }
         },
         pickYear(type){
           this.currentYear+=type;
@@ -177,7 +191,10 @@
         width: 100%;height: 100%;
         background-color: #fff;
         &.current{
-          background-color: rgba(225, 236, 247, 0.35);
+          background-color: rgba(225, 236, 247, 0.7);
+        }
+        &.active{
+          background-color: #fedc74;
         }
       }
     }
