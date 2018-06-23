@@ -3,13 +3,21 @@
     <div class="base item p-l-40 p-r-40">
       <label class="face text-center">
         <img src="" alt="">
-        <span class="font-24">添加图片</span>
+        <span class="font-24" v-if="0">添加图片</span>
       </label>
       <div class="con">
         <mu-text-field v-model="form.custname" :error-text="formRule.custname.text" @change="checkfun('custname')" hintText="姓名" fullWidth /><br/>
         <mu-text-field v-model="form.custposition" hintText="职位" fullWidth  :error-text="formRule.custposition.text" @change="checkfun('custposition')"/><br/>
-        <mu-text-field v-model="form.custphone" hintText="电话" fullWidth  :error-text="formRule.custphone.text"  @change="checkfun('custphone')" type="number"/><br/>
+        <div>
+          <div style="position: relative" v-for="(x,i) in phoneList" :key="'phone_'+i">
+            <mu-text-field  v-model="x.tel" hintText="电话" fullWidth />
+            <mu-icon-button icon="add_circle" class="color_blue" style="position: absolute;bottom:0;right:0;" @click="phoneList.push({tel:''})" v-if="i === phoneList.length-1"/>
+            <mu-icon-button icon="do_not_disturb_on" class="color_red" style="position: absolute;bottom:0;right:0;" @click="phoneList.splice(i,1)" v-else/>
+          </div>
+          <div class="color_red">{{phoneRule.text}}</div>
+        </div>
         <!--<mu-text-field v-model="form.custcompany" hintText="单位名" fullWidth :error-text="formRule.custcompany.text"  @change="checkfun('custcompany')"/><br/>-->
+        <mu-text-field v-model="form.custemail" hintText="邮箱" fullWidth :error-text="formRule.custemail.text"  @change="checkfun('custemail')"/><br/>
         <div class="searchCustomerBox">
           <mu-text-field v-model="form.orgCfname" hintText="所属机构" fullWidth @focus="orgShow=true" @blur="orgShow=false" :errorText="formRule.orgCfname.text" @change="checkfun('orgCfname')"/>
           <div v-show="orgShow" class="searchResult">
@@ -25,11 +33,11 @@
     <div class="vice p-l-40 p-r-40 p-b-50">
       <div class="item center">
         <mu-icon-button icon="add_circle" @click="addBuild" class="color_blue"/>
-        <span class="font-28 flex-box">所辖建筑全称 <i class="color_red m-l-20">{{formRule.custBuilds.text}}</i></span><br>
+        <span class="font-30 flex-box">所辖建筑全称 <i class="color_red m-l-20">{{formRule.custBuilds.text}}</i></span><br>
       </div>
       <div v-for="(x,i) in form.custBuilds" :key="'build'+i">
         <div class="item noLabel">
-          <label class="m-r-25"><mu-icon value="do_not_disturb_on" class="color_red font-28 m-r-10" @click="delBuild(i)"/></label>
+          <label class="m-r-25"><mu-icon-button icon="do_not_disturb_on" class="color_red font-28 m-r-10" @click="delBuild(i)"/></label>
           <!--<mu-text-field v-model="x.buildCfname" hintText="建筑名称"/>-->
           <div class="searchCustomerBox">
             <mu-text-field v-model="x.buildCfname" hintText="建筑名称" fullWidth @focus="x.buildShow=true" @blur="x.buildShow=false" />
@@ -49,7 +57,7 @@
     </div>
     <div class="vice m-t-20 p-l-40 p-r-40">
       <div class="msg">
-        <div class="flex-box"><mu-icon-button icon="add_circle" class="color_blue"/>家庭地址：</div>
+        <div class="flex-box font-30"><mu-icon-button icon="add_circle" class="color_blue"/>家庭地址：</div>
         <div class="item noLabel">
           <label class="m-r-25"></label>
           <mu-text-field hintText="省/市/县" v-model="form.custhomeaddress" @labelClick="areaFlag=true" @focus="$event.target.blur()"/>
@@ -64,21 +72,21 @@
         </div>-->
       </div>
       <div class="msg">
-        <div class="flex-box"><mu-icon-button icon="add_circle" @click="addBuild" class="color_blue"/>生日：</div>
+        <div class="flex-box font-30"><mu-icon-button icon="add_circle" @click="addBuild" class="color_blue"/>生日：</div>
         <div class="item noLabel">
           <label class="m-r-25"></label>
           <mu-date-picker hintText="请选择生日" v-model="form.custbirthday"/>
         </div>
       </div>
       <div class="msg">
-        <div class="flex-box"><mu-icon-button icon="add_circle" @click="addBuild" class="color_blue"/>籍贯：</div>
+        <div class="flex-box font-30"><mu-icon-button icon="add_circle" @click="addBuild" class="color_blue "/>籍贯：</div>
         <div class="item noLabel">
           <label class="m-r-25"></label>
           <mu-text-field hintText="请填写籍贯" v-model="form.custhometown"/>
         </div>
       </div>
       <div class="msg">
-        <div class="flex-box"><mu-icon-button icon="add_circle" @click="addFamily" class="color_blue"/>家庭成员：</div>
+        <div class="flex-box font-30"><mu-icon-button icon="add_circle" @click="addFamily" class="color_blue"/>家庭成员：</div>
         <div class="item noLabel center" v-for="(x,i) in custfamilymember" :key="'family'+i">
           <label class="m-r-25"><mu-icon value="do_not_disturb_on" class="color_red font-28 m-r-10" @click="delFamily(i)"/></label>
           <mu-text-field v-model="x.name" hintText="请填写类型" style="width: 30%" class="m-r-20"/>
@@ -86,7 +94,7 @@
         </div>
       </div>
       <div class="msg">
-        <div class="flex-box"><mu-icon-button icon="add_circle" @click="addBuild" class="color_blue"/>风格标签：</div>
+        <div class="flex-box font-30"><mu-icon-button icon="add_circle" @click="addBuild" class="color_blue"/>风格标签：</div>
         <div class="item noLabel center">
           <label class="m-r-25"></label>
           <transition>
@@ -120,6 +128,7 @@
             custname:'',//客户姓名
             custcompaddress:'',//客户公司地址
             custphone:'',//客户手机号
+            custemail:'',
             //custcompany:'',//客户公司名
             custbirthday:'',//客户生日
             custhomeaddress:'',//客户家庭住址
@@ -141,15 +150,11 @@
               text:'',
               msg:'请输入客户职位'
             },
-            custphone:{
+            custemail:{
               text:'',
-              msg:'请输入正确的联系电话',
-              rule:/^1[3|4|5|7|8][0-9]\d{8}$/
+              msg:'请输入正确的邮箱',
+              rule:/^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
             },
-            /*custcompany:{
-              text:'',
-              msg:'请输入客户公司名'
-            },*/
             custcompaddress:{
               text:'',
               msg:'请输入客户公司地址'
@@ -171,10 +176,32 @@
           areaFlag:false,
           buildsearchList:[],
           orgShow:false,
-          orgList:[]
+          orgList:[],
+          phoneList:[{tel:''}],
+          phoneRule:{
+            text:'',
+            msg:'请输入客户联系电话'
+          }
         }
       },
       watch:{
+        phoneList:{
+          //注意：当观察的数据为对象或数组时，curVal和oldVal是相等的，因为这两个形参指向的是同一个数据对象
+          handler(val){
+            let tel = ''
+            val.forEach(n=>{
+              tel += n.tel+','
+            })
+            tel=tel.substring(0,tel.length-1)
+            this.form.custphone=tel
+            if(tel === ''){
+              this.phoneRule.text=this.phoneRule.msg
+            }else{
+              this.phoneRule.text=''
+            }
+          },
+          deep:true
+        },
         'form.custBuilds'(val){
           this.checkfun('custBuilds')
         },
@@ -205,7 +232,17 @@
           this.areaFlag=val
         },
         submit(){
-          if(!this.checkfun()) return;
+          if(!this.checkfun()) {
+            document.getElementById('app').scrollTop=0
+            return;
+          }
+          if(this.form.custphone === ''){
+            this.phoneRule.text=this.phoneRule.msg
+            document.getElementById('app').scrollTop=0
+            return
+          }else{
+            this.phoneRule.text=''
+          }
           let str='';
           this.custfamilymember.forEach(n=>{
             str+=n.name+'-'+n.relation+','
@@ -252,6 +289,9 @@
                 }
               }else {
                 if(!this.form[i]){
+                  this.formRule[i].text=this.formRule[i].msg
+                  flag =false
+                }else if(this.formRule[i].rule&&!(this.formRule[i].rule.test(this.form[i]))){
                   this.formRule[i].text=this.formRule[i].msg
                   flag =false
                 }else{

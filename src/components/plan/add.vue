@@ -63,8 +63,8 @@
       </div>
     </div>
     <div class="p-l-50 p-r-50 m-t-40">
-      <mu-raised-button label="保存计划" primary fullWidth class="p-t-20 p-b-20 " @click="submit"/>
-      <mu-raised-button label="取消" to="/plan" fullWidth class="p-t-20 p-b-20 m-t-20" />
+      <mu-raised-button label="保存" primary fullWidth class="p-t-20 p-b-20 font-36" @click="submit"/>
+      <mu-raised-button label="取消" to="/plan" fullWidth class="p-t-20 p-b-20 m-t-40 font-36" />
     </div>
     <AreaVue v-model="form.planAddress" :areaFlag="areaFlag" @close="closeArea"></AreaVue>
     <popup-map v-model="form.planDetailaddress" :areaFlag="pmapFlag"  :point="point" @close="closeArea" @confim="confimPmap"></popup-map>

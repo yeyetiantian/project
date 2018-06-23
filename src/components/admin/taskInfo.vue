@@ -42,7 +42,7 @@
       <mu-divider/>
     </div>
     <div class="p-l-50 p-r-50 m-t-40">
-      <mu-raised-button label="+ 创建新任务" :to="'/admin/add/'+id" primary fullWidth class="p-t-20 p-b-20 font-30 m-b-20"/>
+      <mu-raised-button label="+ 创建新任务" :to="'/admin/add/'+id" primary fullWidth class="p-t-20 p-b-20 font-30 m-b-40"/>
       <mu-raised-button label="返回列表" :to="'/admin'"  fullWidth class="p-t-20 p-b-20 font-30"/>
     </div>
     <cs-prop v-model="csVisible" @close="closeCs" :pro-id="csProId"></cs-prop>
@@ -65,7 +65,7 @@
     },
     methods:{
       getPro(){
-        this.$ajax.post('/project/list',{
+        this.$ajax.post('/task/prolist',{
           projId:this.id
         })
           .then(result=>{

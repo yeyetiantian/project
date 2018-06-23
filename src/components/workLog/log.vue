@@ -25,9 +25,19 @@
           <div class="flex-box-btew">
             <span><b>实际完成情况：</b> {{x.planActual}}</span>
           </div>
+          <div class="img-box m-t-20" v-if="x.planDoc"  style="padding-bottom: 0">
+            <div class="img m-r-10" v-for="(x,i) in x.planDoc.split(',')" :key="'img_'+i" v-if="x">
+              <img :src="$ajax.defaults.baseURL+''+x" @click="open($ajax.defaults.baseURL+''+x)">
+            </div>
+          </div>
         </div>
         <div class="bgW m-b-20 font-30 p-40" v-if="!x.planName">
           <pre>{{x.planActual}}</pre>
+          <div class="img-box m-t-20" v-if="x.planDoc"  style="padding-bottom: 0">
+            <div class="img m-r-10" v-for="(x,i) in x.planDoc.split(',')" :key="'img_'+i" v-if="x">
+              <img :src="$ajax.defaults.baseURL+''+x" @click="open($ajax.defaults.baseURL+''+x)">
+            </div>
+          </div>
         </div>
       </div>
       <!--<div class="bgW font-30 p-l-40 flex-box-btew">
@@ -36,6 +46,9 @@
       </div>-->
     </div>
     <mu-raised-button label="新增日志" to="/workLog/add" primary fullWidth class="addLog p-t-20 p-b-20 font-30" icon="add"/>
+    <mu-dialog :open="dialog" @close="dialog = false" dialogClass="imgDilog">
+      <img :src="diaImg" alt="" @click="dialog = false">
+    </mu-dialog>
   </div>
 </template>
 
@@ -45,10 +58,16 @@
       data() {
         return {
           nowDate: new Date(),
-          logList:[]
+          logList:[],
+          dialog:false,
+          diaImg:'',
         }
       },
       methods:{
+        open(src){
+          this.dialog=true;
+          this.diaImg=src
+        },
         //获取今日日志列表
         getLogList(){
           this.$ajax.post('/Journal/daylist',{})

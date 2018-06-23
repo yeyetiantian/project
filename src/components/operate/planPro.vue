@@ -2,7 +2,7 @@
   <div class="bgG planBox" style="height: 100%">
     <div class="bgW flex-box-btew font-30 p-t-30 p-l-25 p-r-25 p-b-30" style="position: absolute;top: 0;width: 100%">
       <span>施工编号：{{info.conProcode}}</span>
-      <router-link :to="'../planDate'" class="flex-box color_black">
+      <router-link :to="'../planDate'" class="flex-box color_black" v-if="0">
         <mu-icon value="date_range" class="color_blue"/> 全部计划
       </router-link>
     </div>
@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="add-btn-bottom p-20 bgG">
-      <mu-raised-button label="新增计划" :to="'/operate/planBuild/'+id" primary fullWidth class="p-t-20 p-b-20 font-30" icon="add"/>
+      <mu-raised-button label="新增计划" :to="'/operate/planBuild/'+id" primary fullWidth class="p-t-20 p-b-20" icon="add"/>
     </div>
   </div>
 </template>

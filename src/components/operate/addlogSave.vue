@@ -50,7 +50,7 @@
         </div>
       </div>
     </div>
-    <mu-raised-button label="保存日志" primary fullWidth class="p-t-50 p-b-50 font-50 m-t-50" />
+    <mu-raised-button label="保存" primary fullWidth class="p-t-50 p-b-50 font-50 m-t-50" />
   </div>
 </template>
 

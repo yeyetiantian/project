@@ -34,8 +34,8 @@
       </div>
     </div>
     <div class="p-l-50 p-r-50 m-t-40">
-      <mu-raised-button label="保存客户信息" primary fullWidth class="p-t-20 p-b-20 " />
-      <mu-raised-button label="取消" fullWidth class="p-t-20 p-b-20 m-t-20" />
+      <mu-raised-button label="保存" primary fullWidth class="p-t-20 p-b-20 " />
+      <mu-raised-button label="取消" fullWidth class="p-t-20 p-b-20 m-t-40" />
     </div>
     <AreaVue v-model="areaVal" :areaFlag="areaFlag" @close="closeArea"></AreaVue>
   </form>

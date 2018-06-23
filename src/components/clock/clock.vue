@@ -17,7 +17,7 @@
      </div>
      <div class="p-30">
        <mu-raised-button label="建立目标客户" to="./clock/add" primary fullWidth class="p-t-20 p-b-20 " v-if="0"/>
-       <mu-raised-button label="打卡记录查看" to="./clock/record" fullWidth class="p-t-20 p-b-20 m-t-20" />
+       <mu-raised-button label="打卡记录查看" to="./clock/record" fullWidth class="p-t-20 p-b-20 m-t-40" />
      </div>
    </div>
 </template>

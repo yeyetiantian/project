@@ -47,9 +47,12 @@
     <div class="bgW p-t-20 p-l-40 p-r-40">
       <div class="item">
         <label>业务类型：</label>
-        <mu-select-field v-model="formData.projType" hintText="请选择类型" >
-          <mu-menu-item v-for="(x,i) in serviceTypeList" :key="i" :value="x.description" :title="x.description" />
-        </mu-select-field>
+        <div class="flex-box">
+          <mu-select-field v-model="formData.projType" hintText="请选择类型">
+            <mu-menu-item v-for="(x,i) in serviceTypeList" :key="i" :value="x.description" :title="x.description" />
+          </mu-select-field>
+          <mu-text-field class="m-l-20" v-model="projType" hintText="请输入类型" v-if="formData.projType === '自定义'"/>
+        </div>
       </div>
       <div class="item">
         <label>预算金额：</label>
@@ -69,8 +72,8 @@
       </div>
     </div>
     <div class="p-l-50 p-r-50 m-t-40">
-      <mu-raised-button label="确认保存" primary fullWidth class="p-t-20 p-b-20 " @click="submit"/>
-      <mu-raised-button label="取消" fullWidth class="p-t-20 p-b-20 m-t-20" />
+      <mu-raised-button label="保存" primary fullWidth class="p-t-20 p-b-20 " @click="submit"/>
+      <mu-raised-button label="取消" fullWidth class="p-t-20 p-b-20 m-t-40" />
     </div>
   </form>
 </template>
@@ -98,6 +101,7 @@
             "projMarkephone": "",
             "projStartdata":""
           },
+          projType:'',
           formRule:{
             projName:{
               text:'',
@@ -142,6 +146,9 @@
         submit(){
           if(!this.checkfun()){
             return
+          }
+          if(this.formData.projType==='自定义'&&this.projType){
+            this.formData.projType = this.projType
           }
           this.$ajax.post('/project/add',this.formData)
             .then(result => {
@@ -198,6 +205,9 @@
         }
       },
       created(){
+        this.serviceTypeList.push({
+          description: '自定义'
+        })
       }
     }
 </script>

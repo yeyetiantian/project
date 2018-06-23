@@ -23,8 +23,8 @@
     <div class="bgW p-t-20 p-r-30 p-b-30">
       <div class="item">
         <label>分配用户：</label>
-        <mu-select-field v-model="form.userid"  >
-          <mu-menu-item value="636EB0B9DA37FFB4E05011AC08000A83" title="测试账号" ></mu-menu-item>
+        <mu-select-field v-model="form.userid" :error-text="formRule.userid.text" @change="checkfun('userid')" hintText="选择用户" >
+          <mu-menu-item v-for="x in userList" :key="'user-'+x.id" :value="x.id" :title="x.userName" ></mu-menu-item>
         </mu-select-field>
       </div>
       <div class="item m-b-20">
@@ -55,11 +55,12 @@
         csTypeList: ['检查', '维修'],
         csType: 0,
         info: {},
+        userList:[],
         form: {
           conProid: this.$route.params.id,
           construcnum: '',
           construc: '',
-          userid: '636EB0B9DA37FFB4E05011AC08000A83'
+          userid: ''
         },
         formRule: {
           construcnum: {
@@ -78,6 +79,12 @@
       }
     },
     methods:{
+      getUser(){
+        this.$ajax.post('/findUser',{})
+          .then(result => {
+            this.userList=result.data.data
+          })
+      },
       getInfo(){
         this.$ajax.post('/task/conslist',{
           conProid:this.id
@@ -129,6 +136,7 @@
       }
     },
     created(){
+      this.getUser()
       this.getInfo()
     }
   }

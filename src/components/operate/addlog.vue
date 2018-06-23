@@ -54,7 +54,7 @@
         </div>
       </div>
       <div class="p-20">
-        <mu-raised-button label="保存日志" @click="submit" primary fullWidth class="p-t-50 p-b-50 font-50 m-t-50"></mu-raised-button>
+        <mu-raised-button label="保存" @click="submit" primary fullWidth class="p-t-50 p-b-50 font-50 m-t-50"></mu-raised-button>
         <mu-raised-button label="返回上一步" @click="step=0" fullWidth class="p-t-50 p-b-50 font-50 m-t-50"></mu-raised-button>
       </div>
     </div>

@@ -7,7 +7,6 @@ export default new Router({
   routes: [
     {
       path: '/admin',
-
       component: resolve => {
         require(['../components/route.vue'], resolve)
       },
@@ -499,5 +498,23 @@ export default new Router({
         }
       ]
     },
+    {
+      path: '/login',
+      meta: {
+        title:'实名认证'
+      },
+      component: resolve => {
+        require(['../components/login/login.vue'], resolve)
+      },
+    },
+    {
+      path: '/login-ok',
+      meta: {
+        title:'实名认证'
+      },
+      component: resolve => {
+        require(['../components/login/login-ok.vue'], resolve)
+      },
+    }
   ]
 })

@@ -34,15 +34,15 @@
         <span></span>
       </div>
     </div>
-    <div class="bgW m-t-20 p-t-30 p-l-30 p-r-30 p-b-10 m-b-20" v-if="compeletShow">
+    <div class="bgW m-t-20 p-t-30 p-l-30 p-r-30 p-b-10 m-b-40" v-if="compeletShow">
       <div class="text-bold">实际完成情况： </div>
       <mu-text-field v-model="planActual" hintText="请输入实际完成情况" multiLine :rows="3" :rowsMax="6" fullWidth style="margin-bottom: 0" :error-text="planActualMsg" @change="checkfun"/>
     </div>
-    <div class="p-20">
-      <mu-raised-button v-if="info.planState!=='已完成'&&!compeletShow" label="完成计划" @click="compeletShow=true" primary fullWidth class="p-t-20 p-b-20 " />
-      <mu-raised-button v-if="compeletShow" label="完成" @click="compeletPlan" primary fullWidth class="p-t-20 p-b-20 " />
-      <mu-raised-button v-if="!compeletShow" label="关闭" to="/plan" fullWidth class="p-t-20 p-b-20 m-t-20" />
-      <mu-raised-button v-if="compeletShow" label="取消" @click="compeletShow=false" fullWidth class="p-t-20 p-b-20 m-t-20" />
+    <div class="p-40">
+      <mu-raised-button v-if="info.planState!=='已完成'&&!compeletShow" label="完成计划" @click="compeletShow=true" primary fullWidth class="p-t-20 p-b-20" />
+      <mu-raised-button v-if="compeletShow" label="完成" @click="compeletPlan" primary fullWidth class="p-t-20 p-b-40" />
+      <mu-raised-button v-if="!compeletShow" label="关闭" to="/plan" fullWidth class="p-t-20 p-b-20 m-t-40" />
+      <mu-raised-button v-if="compeletShow" label="取消" @click="compeletShow=false" fullWidth class="p-t-20 p-b-20 m-t-40" />
     </div>
   </div>
 </template>

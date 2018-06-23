@@ -96,8 +96,8 @@
           <div class="p-l-50 p-r-50 m-t-40">
             <mu-raised-button label="+ 多笔金额" primary fullWidth class="p-t-20 p-b-20" v-if="!addVisitor" @click="addVisitor=true"/>
             <mu-raised-button label="确认保存" primary fullWidth class="p-t-20 p-b-20 " v-if="addVisitor" @click="recradd"/>
-            <mu-raised-button  v-if="addVisitor" @click="addVisitor=false" label="取消" fullWidth class="p-t-20 p-b-20 m-t-20" />
-            <mu-raised-button v-if="!addVisitor" to="/project" label="关闭" fullWidth class="p-t-20 p-b-20 m-t-20" />
+            <mu-raised-button  v-if="addVisitor" @click="addVisitor=false" label="取消" fullWidth class="p-t-20 p-b-20 m-t-40" />
+            <mu-raised-button v-if="!addVisitor" to="/project" label="关闭" fullWidth class="p-t-20 p-b-20 m-t-40" />
           </div>
         </div>
       </mt-tab-container-item>
@@ -195,7 +195,7 @@
             this.getTrackList()
           })
       },
-      //获取进度列表
+        //获取进度列表
       getTrackList(){
         this.$ajax.post('/track/list',{
           projId:this.id

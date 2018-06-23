@@ -3,7 +3,8 @@
       <div class="flex-box-btew font-36 p-25" style="background-color: #e0e0e1;">
         <span>{{now | formatDate('YY-MM-DD')}}</span>
         <span>今日打卡：{{ddlist.length}}次</span>
-        <router-link to="./calendar"><mu-icon value="date_range"  color="#03a9f4"/></router-link>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;</div>
+        <router-link to="./calendar" v-if="0"><mu-icon value="date_range"  color="#03a9f4"/></router-link>
       </div>
       <ul class="_list p-t-20 p-l-25 p-r-25 p-b-40">
         <li v-for="x in ddlist" :key="'dd'+x.clockDate">

@@ -61,7 +61,7 @@
       },
       methods:{
         getconduct(){
-          this.$ajax.post('/project/complete',{})
+          this.$ajax.post('/task/complete',{})
             .then(result => {
               this.noallotList=result.data.data
             })

@@ -5,12 +5,18 @@
     </div>
     <div class="bgW p-l-35 p-r-30 p-t-35 p-b-20 m-b-20" >
       <mu-text-field v-model="form.planActual" hintText="请输入工作描述内容" multiLine :rows="3" :rowsMax="6" fullWidth class="m0" :errorText="formRule.planActual.text" @change="checkfun('planActual')"/>
-      <div class="flex-box-btew flex-box-star">
+      <div class="flex-box-btew flex-box-star m-t-40">
         <div class="img-box">
+          <div class="img m-r-10" v-for="(x,i) in imgList" :key="'img_'+i">
+            <img :src="$ajax.defaults.baseURL+''+x.filePath" @click="open($ajax.defaults.baseURL+''+x.filePath)">
+          </div>
         </div>
         <div class="flex-box-cen">
-          <span class="m-r-20">上传照片或是文件</span>
-          <mu-icon value="add_a_photo"/>
+          <span class="m-r-20" style="width: 4em">上传照片</span>
+          <div class="img" style="position: relative;">
+            <mu-icon value="add_a_photo"></mu-icon>
+            <up @onsucccess="upimg" :image="true"></up>
+          </div>
         </div>
       </div>
     </div>
@@ -20,17 +26,27 @@
     </div>
     <div class="p-l-50 p-r-50 m-t-40">
       <mu-raised-button label="保存日志" @click="submit" primary fullWidth class="p-t-20 p-b-20 " />
-      <mu-raised-button label="取消" to="/workLog" fullWidth class="p-t-20 p-b-20 m-t-20" />
+      <mu-raised-button label="取消" to="/workLog" fullWidth class="p-t-20 p-b-20 m-t-40" />
     </div>
+    <mu-dialog :open="dialog" @close="dialog = false" dialogClass="imgDilog">
+      <img :src="diaImg" alt="" @click="dialog = false">
+    </mu-dialog>
   </div>
 </template>
 
 <script>
+  import up from '../util/update.vue'
     export default {
       name: "logAdd",
+      components: {
+        up
+      },
       data() {
         return {
           nowDate: new Date(),
+          imgList:[],
+          dialog:false,
+          diaImg:'',
           list:[
             {
               con:'1、徐汇政府楼建处  会议与设计部 有成效\n2、静安政府  拜访客户',
@@ -49,12 +65,29 @@
           }
         }
       },
+      watch:{
+        imgList(val){
+          let str='';
+          val.forEach(n=>{
+            str+=n.filePath+','
+          });
+          this.form.planDoc=str.substring(0,src.length-1)
+        }
+      },
       methods: {
+        open(src){
+          this.dialog=true;
+          this.diaImg=src
+        },
         add() {
           this.list.push({
             con:'',
             imgs:[]
           })
+        },
+        upimg(list){
+          // this.formRule.conClockpic.text='';
+          this.imgList=this.imgList.concat(list);
         },
         submit(){
           if(!this.checkfun())return;

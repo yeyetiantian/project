@@ -40,8 +40,8 @@
       </div>
     </div>
     <div class="p-l-50 p-r-50 m-t-40">
-      <mu-raised-button label="保存" @click="submit" primary fullWidth class="p-t-20 p-b-20 m-b-20" />
-      <mu-raised-button label="取消" :to="'/admin/info/'+id"  fullWidth class="p-t-20 p-b-20 font-30"/>
+      <mu-raised-button label="保存" @click="submit" primary fullWidth class="p-t-20 p-b-20 m-b-40" />
+      <mu-raised-button label="取消" :to="'/admin/info/'+id"  fullWidth class="p-t-20 p-b-20"/>
     </div>
     <popup-map v-model="form.conProaddress" :areaFlag="pmapFlag"  :point="point" @close="closeArea" @confim="confimPmap"></popup-map>
   </form>
@@ -104,7 +104,7 @@
         this.form.latitude=this.point.lat
       },
       getPro(){
-        this.$ajax.post('/project/list',{
+        this.$ajax.post('/task/prolist',{
           projId:this.id
         })
           .then(result=>{

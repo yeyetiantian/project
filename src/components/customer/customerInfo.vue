@@ -14,7 +14,8 @@
         </label>
         <div class="con">
           <p class="m-b-25 font-36 text-bold">{{info.custname}}</p>
-          <p class="m-b-10">{{info.custphone}}</p>
+          <p class="m-b-10" v-for="(x,i) in phoneList" :key="'info_phone_'+i">{{x}}</p>
+          <p class="m-b-10">{{info.custemail}}</p>
           <p class="m-b-10">{{info.custposition}}</p>
           <p class="m-b-10">{{info.orgCfname}}</p>
           <p>办公地址：{{info.custcompaddress}}</p>
@@ -28,9 +29,9 @@
       </div>
       <mu-divider class="headLine"/>
       <div class="list">
-        <div class="item p-l-20 p-r-20 m-r-20" v-for="(x,i) in buildList" :key="'build_'+i">
-          <div class="left">{{x.buildCfname}}</div>
-          <div class="right">{{x.buildType}}</div>
+        <div class=" p-20" v-for="(x,i) in buildList" :key="'build_'+i">
+          <div class="">{{x.buildCfname}}</div>
+          <div class="text-right color_999">{{x.buildType}}</div>
         </div>
       </div>
     </div>
@@ -77,7 +78,8 @@
           id:this.$route.params.id,
           value:50,
           info:{},
-          buildList:[]
+          buildList:[],
+          phoneList:[]
         }
       },
       methods: {
@@ -88,6 +90,9 @@
             .then(result => {
               this.info=result.data.data.tCustomer;
               this.buildList=result.data.data.custBuilds
+              if(this.info.custphone){
+                this.phoneList=this.info.custphone.split(',')
+              }
             })
         },
         linkEdit(){

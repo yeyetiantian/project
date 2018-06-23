@@ -24,7 +24,7 @@
           <p>项目名称：{{info.conProname}}</p>
         </div>
       </div>
-      <plan-date></plan-date>
+      <plan-date v-if="0"></plan-date>
       <div class="p-l-50 p-r-50 m-t-30">
         <mu-raised-button label="保存客户信息" @click="submit" primary fullWidth class="p-t-20 p-b-20 " />
       </div>

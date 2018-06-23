@@ -3,7 +3,7 @@
     <div class="map bgG">
       <div class="clock-big flex-box-cen" :class="distance&&distance<100?'':'no'">
         <div class="clock-small">
-          <span class="font-30 m-b-50" >{{distance&&distance<100?'您已进入打卡范围':'目前不再打卡范围'}}</span>
+          <span class="font-30 m-b-50" >{{distance&&distance<100?'您已进入打卡范围':'目前不在打卡范围'}}</span>
           <span class="font-24 flex-box-btew flex-box-star" ><mu-icon value="location_on"></mu-icon><i style="width: 3.85333rem">{{form.curAddress}}</i></span>
         </div>
       </div>
@@ -29,38 +29,47 @@
       <div class="item flex-box-star">
         <label>楼照：</label>
         <div class="img-box">
-          <div class="img m-r-10">
-            <img src="../../assets/img/img.png" alt="">
+          <div class="img m-r-10" v-for="(x,i) in imgList" :key="'img_'+i">
+            <img :src="$ajax.defaults.baseURL+''+x.filePath" @click="open($ajax.defaults.baseURL+''+x.filePath)">
           </div>
           <div class="img">
             <mu-icon value="add_a_photo"></mu-icon>
+            <up @onsucccess="upimg" :image="true"></up>
           </div>
+          <div class="error color_red">{{formRule.clockImage.text}}</div>
         </div>
       </div>
       <div class="item">
         <label>备注：</label>
         <mu-text-field v-model="form.clockDescri" hintText="多行文本输入，默认 3行，最大6行" multiLine :rows="3" :rowsMax="6" :error-text="formRule.clockDescri.text" @change="checkfun('clockDescri')"></mu-text-field>
       </div>
-      <div class="p-l-50 p-r-50 m-t-20">
+      <div class="p-l-50 p-r-50 m-t-40">
         <mu-raised-button :label="time + ' 正常打卡'" @click="clockAdd" primary fullWidth class="p-t-20 p-b-20 "></mu-raised-button>
       </div>
     </form>
+    <mu-dialog :open="dialog" @close="dialog = false" dialogClass="imgDilog">
+      <img :src="diaImg" alt="" @click="dialog = false">
+    </mu-dialog>
   </div>
 </template>
 
 <script>
   import Map from '../util/map.vue'
+  import up from '../util/update.vue'
     export default {
       name: "Punch",
       components: {
-        Map
+        Map,up
       },
       data() {
         return {
           now:new Date(),
           serviceTypeList:['政府','业主','材料商'],
           serviceSelect:0,
+          dialog:false,
+          diaImg:'',
           planList:[],
+          imgList:[],
           selectPlan:{},
           curShow:false,
           location:{},//定位对象
@@ -73,6 +82,7 @@
             clockName:'',
             curAddress:'',
             clockDate:'',
+            clockImage:''
           },
           formRule:{
             clockDescri:{
@@ -83,6 +93,10 @@
               text:'',
               msg:'请选择客户名称'
             },
+            clockImage:{
+              text:'',
+              msg:'请上传打卡照片'
+            }
           }
         }
       },
@@ -103,6 +117,13 @@
           }else{
             this.form.clockState='非正常打卡'
           }
+        },
+        imgList(val){
+          let str='';
+          val.forEach(n=>{
+            str+=n.filePath+','
+          });
+          this.form.clockImage=str.substring(0,src.length-1)
         }
       },
       computed:{
@@ -115,6 +136,10 @@
         }
       },
       methods: {
+        open(src){
+          this.dialog=true;
+          this.diaImg=src
+        },
         getList(){
           this.$ajax.post('/plan/daylist',{})
             .then((result)=>{
@@ -150,6 +175,10 @@
         },
         checkPoint(pt){
           return BMapLib.GeoUtils.getDistance(this.location.point,pt)
+        },
+        upimg(list){
+          this.formRule.clockImage.text='';
+          this.imgList=this.imgList.concat(list);
         },
         //执行打卡
         clockAdd(){
