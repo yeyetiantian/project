@@ -15,10 +15,19 @@ export default {
             this.$store.commit('setdicttype',result.data.data)
           }
         })
+    },
+    getPhone(){
+      if(!this.$store.state.phone){
+        this.$ajax.post('getPhone',{})
+          .then(result=>{
+            this.$store.commit('setPhone',result.data.data.phone)
+          })
+      }
     }
   },
   mounted(){
     this.getdicttype()
+    this.getPhone()
   }
 }
 </script>

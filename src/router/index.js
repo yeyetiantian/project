@@ -515,6 +515,80 @@ export default new Router({
       component: resolve => {
         require(['../components/login/login-ok.vue'], resolve)
       },
+    },
+    {
+      path: '/backlog',
+      component: resolve => {
+        require(['../components/route.vue'], resolve)
+      },
+      children:[
+        {
+          path: '',
+          name:'backlog-list',
+          meta: {
+            title:'待办项'
+          },
+          component: resolve => {
+            require(['../components/Backlog/backlog.vue'], resolve)
+          }
+        },
+        {
+          path: '/blog_info/:id',
+          name:'backlog-info',
+          meta: {
+            title:'待办项'
+          },
+          component: resolve => {
+            require(['../components/Backlog/blog_info.vue'], resolve)
+          }
+        },
+        {
+          path: '/under_way',
+          name:'under_way',
+          meta: {
+            title:'待办项'
+          },
+          component: resolve => {
+            require(['../components/Backlog/under_way.vue'], resolve)
+          }
+        },
+        {
+          path: '/add_under_way/:id',
+          name:'add_under_way',
+          meta: {
+            title:'待办项'
+          },
+          component: resolve => {
+            require(['../components/Backlog/add_under_way.vue'], resolve)
+          }
+        },
+        {
+          path: '/up_wait/:id',
+          name:'up_wait',
+          meta: {
+            title:'待办项'
+          },
+          component: resolve => {
+            require(['../components/Backlog/up_wait.vue'], resolve)
+          }
+        },
+        {
+          path: '/sleArea',
+          name:'sleArea',
+          meta: {
+            title:'待办项'
+          },
+          component: resolve => {
+            require(['../components/Backlog/area.vue'], resolve)
+          }
+        },
+      ]
+    },
+    {
+      path: '/test',
+      component: resolve => {
+        require(['../components/test.vue'], resolve)
+      },
     }
   ]
 })

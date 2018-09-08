@@ -1,6 +1,6 @@
 <template>
   <form class="login-box">
-    <div class="top-bg">
+    <div class="top-bg m-b-10">
       <img src="../../assets/img/login-bg.png" alt="">
     </div>
     <div class="input-box font-38">
@@ -16,15 +16,15 @@
     <div class="input-box font-38">
       <label>职位</label>
       <div class="select-box">
-        <span class="select-span">{{form.userType}}</span>
-        <select v-model="form.userType" @change="checkfun('userType')">
+        <span class="select-span">{{form.userTag}}</span>
+        <select v-model="form.userTag" @change="checkfun('userTag')">
           <option v-for="(x,i) in role" :key="'role-'+i" :value="x.description">{{x.description}}</option>
         </select>
       </div>
-      <div class="color_red msg">{{formRule.userType.text}}</div>
+      <div class="color_red msg">{{formRule.userTag.text}}</div>
     </div>
-    <div class="flex-box-cen p-t-40">
-      <button type="button" class="btn-sub font-50 m-t-40" @click="submit">确 定</button>
+    <div class="flex-box-cen p-t-20">
+      <button type="button" class="btn-sub font-50" @click="submit">确 定</button>
     </div>
   </form>
 </template>
@@ -38,7 +38,7 @@
         form:{
           userName:'',
           phone:'',
-          userType:''
+          userTag:''
         },
         formRule:{
           userName:{
@@ -50,7 +50,7 @@
             msg:'请输入正确的手机号',
             rule:/^1[3|4|5|7|8][0-9]\d{8}$/
           },
-          userType:{
+          userTag:{
             text:'',
             msg:'请选择您的职位'
           }
@@ -118,7 +118,7 @@
     text-align: center;
     img{
       max-width: 100%;
-      height:8.5rem;
+      max-height:8rem;
     }
   }
   .input-box{
